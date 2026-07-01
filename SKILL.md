@@ -1,7 +1,7 @@
 ---
 name: personal-coach-skill-design
 description: 设计/升级"长期陪伴型"个人 coach 类 skill 的完整方法论——健身/学习/营养/写作教练。把 v1 风格（被动答 + 机械出 plan）升级到 v2 风格（主动跟踪 + 状态关注 + 周期化 + 抗幻觉）。当用户说"升级我的 X skill"、"我的 skill 老是出幻觉/不主动"、"X 教练 skill 加主动跟踪"时用。**核心 4 大支柱 + 4 个 cron 协同 + 4 条抗幻觉硬规则 + cron-sync-checklist** 防 cross-file drift。
-version: 1.0.0
+version: 1.1.0
 author: Community (auto-generated from fitness-coach v1→v2 实战)
 license: MIT
 metadata:
@@ -34,6 +34,31 @@ metadata:
 - 短期项目 skill（"3 天内完成 X"）—— 不需要周期化
 - 没有 state.md 数据存储 —— 必须有
 - 只用 CLI 不接 cron —— v2 必须接 cron
+
+## 首次加载行为（v2 强制的 Step 0）
+
+**当这个 skill 被第一次加载到 Hermes Agent 时**，Agent 必须在执行任何 cron 或回答任何训练问题之前，主动采集用户画像：
+
+```
+🏋️ 欢迎使用 [X] 教练！
+
+先让我了解你，以便制定个性化方案：
+
+性别：？（男 / 女）
+年龄：？
+身高（cm）：？
+体重（kg）：？
+训练经验：？（新手 / 初中级 / 中高级 / 高级）
+当前目标：？（增肌 / 减脂 / 增力 / 保持）
+每周能练几天：？
+有无伤病或限制：？
+```
+
+**规则**：
+- 只问一次。用户回答后存入 `state.md` 用户画像区
+- 用户事后可以随时说"更新我的数据"来修改
+- 用户画像区是 **所有 cron 和算法的前置依赖** — 没有用户画像就不该出训练计划
+- 如果用户跳过（"先不填"），Agent 应说明"没有基础数据我无法制定安全有效的计划"，暂不启用 cron，等用户填完
 
 ## 4 大支柱（**v2 核心**）
 
@@ -158,6 +183,28 @@ LLM: [patch state.md] → [python 算 EWMA + Recovery] → [按状态出 plan]
 - ❌ "再过 X 周你就能到 Y kg"（编时间线）
 - ✅ "按当前 EWMA -0.5 kg/周 推算，约 X-Y 周，**前提是坚持当前节奏**"
 - ✅ 给范围，不给具体日期
+
+## 🧠 心理建设机制（鼓励系统）
+
+**健身教练不只是算数据和出计划**。在用户不想动的时候推一把，在用户累的时候给空间。金句挂钩实际表现，不尬吹不廉价。
+
+### 触发场景 + Agent 行为
+
+| 场景 | 检测条件 | Agent 说的 | 意图 |
+|------|---------|-----------|------|
+| 连续训练 3 天+ | streak ≥ 3 | 🔥 **勤奋者他日不留悔恨** — 今天状态一般？减量但别停 | 鼓励坚持 |
+| 偷懒 1 天 | 昨日无记录，非休息日 | 💪 一天不练影响不大，**但别让明天再写悲歌** | 防滑坡 |
+| PR 破纪录 | 检测到 PR 标记 | 🏆 **纪录就是用来破的**。下次目标 +2.5kg | 趁热打铁 |
+| 减脂平台期 | 体重连续 7 天不变 | 📉 体重没动？围度呢？照片呢？**数据不只看一个维度** | 打破焦虑 |
+| 受伤/生病休息 | 用户报告伤病 | 🛌 **休息也是训练的一部分**。恢复好了再冲 | 给许可 |
+| 连续偷懒 3 天+ | streak 中断 ≥ 3 天 | ⚠️ **勤奋者他日不留悔恨，懒惰者明日再写悲歌** | 敲警钟 |
+
+### 设计规则
+
+1. **不廉价** — 每句金句跟实际表现挂钩，不天天说"你是最棒的"
+2. **不尬吹** — PR 才庆祝，连续训练才表扬，空话不说
+3. **分场景** — 鼓励（连续训练）/ 敲打（连续偷懒）/ 安慰（受伤休息）三类分开
+4. **可配置** — 金句放在 references/quotes.md，用户可自定义
 
 ## state.md 数据 schema 模板
 
@@ -377,7 +424,21 @@ GitHub 不自动检测读者语言。通用做法：
 ### 高质量 README 要素
 
 1. Badge 徽章行 — 版本、License、框架、平台等徽章（shields.io），整齐一行居中
-2. 架构图 — 用 ASCII 或 HTML 画出 Agent ↔ 通讯软件 ↔ 数据存储的流程，让读者 3 秒理解全貌
+2. **架构图 — 用 Mermaid 代码块（GitHub 原生渲染），不要用 ASCII 手画。推荐 Claude 风格配色：**
+   ```mermaid
+   %%{init: {'theme': 'base', 'themeVariables': {
+     'background': '#fcf9f7',
+     'primaryColor': '#6B4FBB',
+     'primaryTextColor': '#fff',
+     'primaryBorderColor': '#5a3fa8',
+     'lineColor': '#D4A574',
+     'secondaryColor': '#f5f0eb',
+     'clusterBkg': '#fffcf9',
+     'clusterBorder': '#e8ddd0',
+     'nodeBorder': '#d4c5b8'
+   }}}%%
+   ```
+   底色暖白 #fcf9f7、主色 Claude 紫 #6B4FBB、线条暖琥珀 #D4A574、边框柔米色。
 3. 对比表格 — v1 vs v2（改造前 vs 改造后）的差异用表格呈现，比大段文字直观
 
 ### 健身领域特别注意事项
@@ -391,3 +452,4 @@ GitHub 不自动检测读者语言。通用做法：
 - `references/algorithm-templates.md` — 6 个核心 Python 算法（EWMA / 1RM / Recovery / Mesocycle / Autoregulation / 今日字段）
 - `references/cron-sync-checklist.md` — 跨文件同步验证流程（防 cross-file drift）
 - `references/case-study-fitness-coach.md` — 健身教练 skill v1→v2 完整实战案例
+- `references/pre-publish-privacy-check.md` — 发布到公开仓库前的隐私扫描脚本 + 脱敏清单

@@ -151,14 +151,35 @@ The #1 problem with AI fitness coaches: **fabricated exercises, made-up papers, 
 
 ---
 
+## 🧠 Mindset: Training Is a Conversation with Yourself
+
+> **The diligent leave no regrets; the lazy write elegies tomorrow.**
+
+An AI coach isn't just about numbers and plans — it pushes you when you don't feel like moving, and gives you space when you're spent.
+
+The Agent hits you with the right words at the right moments:
+
+| Scenario | What the Agent Says |
+|----------|-------------------|
+| 3-day streak | 🔥 **The diligent leave no regrets** — low energy? reduce volume, don't skip |
+| Skipped a day | 💪 One day off won't matter, **just don't make it two** |
+| New PR | 🏆 **Records are meant to be broken** — next target +2.5kg |
+| Fat loss plateau | 📉 Weight stuck? What about measurements? Photos? **Look at more than one metric** |
+| Injury / sick break | 🛌 **Rest is part of training** — come back stronger |
+
+> 🎯 **Encouragement isn't cheap**. Every quote ties to actual performance, never empty flattery.
+
+---
+
 ## 💡 Design Philosophy
 
 ```
-Data > Subjective    — EWMA beats single-day weight readings
-State > Plan         — Recovery Score drives volume, not a fixed cycle
-Proactive > Reactive — Agent asks first, doesn't wait for you
-Algorithm > Guess    — Python compute, never mental math
-Range > Date         — Give ranges (X-Y weeks), never specific dates
+Data > Subjective       — EWMA beats single-day weight readings
+State > Plan            — Recovery Score drives volume, not a fixed cycle
+Proactive > Reactive    — Agent asks first, doesn't wait for you
+Algorithm > Guess       — Python compute, never mental math
+Range > Date            — Give ranges (X-Y weeks), never specific dates
+Encouragement > Fluff   — Quotes tied to performance, never empty praise
 ```
 
 ---
