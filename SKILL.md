@@ -333,6 +333,44 @@ hermes --profile <profile> -z "按 <cron-name> v<X> prompt 跑一遍 <场景>。
 - ❌ 心算不写代码 — 必须用 python
 - ❌ 改 SKILL.md 不改 cron prompt — cross-file drift 风险
 - ❌ 算法公式在两个文件各写一份 — drift 真事故
+- ❌ 将用户真实名称/个人标识写入公开发布的内容 — 示例对话、README、案例研究中的用户名/昵称/机器名/IP 等必须脱敏替换为通用占位符。所有公开文本中的示例必须用中性称呼，不可出现真实用户名
+
+## README 设计要点（面向公开仓库）
+
+当 coach skill 设计完成后发布到 GitHub 等公开平台，README 直接影响项目印象。
+
+### 语言切换栏
+
+GitHub 不自动检测读者语言。通用做法：
+
+- README.md = 中文内容（GitHub 默认渲染）
+- README_EN.md = 英文内容
+
+两个文件顶部各放一个切换栏：
+
+```markdown
+<!-- README.md 顶部 -->
+<p align="center">
+  <a href="README_EN.md">:flag-us: English</a> · <b>:flag-cn: 中文</b>
+</p>
+
+<!-- README_EN.md 顶部 -->
+<p align="center">
+  <b>:flag-us: English</b> · <a href="README.md">:flag-cn: 中文</a>
+</p>
+```
+
+### 高质量 README 要素
+
+1. Badge 徽章行 — 版本、License、框架、平台等徽章（shields.io），整齐一行居中
+2. 架构图 — 用 ASCII 或 HTML 画出 Agent ↔ 通讯软件 ↔ 数据存储的流程，让读者 3 秒理解全貌
+3. 对比表格 — v1 vs v2（改造前 vs 改造后）的差异用表格呈现，比大段文字直观
+
+### 健身领域特别注意事项
+
+- 示例对话必须脱敏：展示用户与 Agent 的对话时用中性称呼（你），不可用真实用户名
+- 数据示例用合理但不真实的数字：体重/训练量等示例数字要看起来合理但无法追溯到真人
+- 突出通讯软件集成：明确写出通过飞书/微信/Telegram 自动推送，这是区别于传统健身 App 的核心卖点
 
 ## Reference Files
 

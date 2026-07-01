@@ -55,32 +55,48 @@ The Agent automatically:
 
 ## 🏗️ Architecture
 
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'background': '#ffffff',
+  'primaryColor': '#2563eb',
+  'primaryTextColor': '#fff',
+  'primaryBorderColor': '#1d4ed8',
+  'lineColor': '#64748b',
+  'secondaryColor': '#f0f9ff',
+  'tertiaryColor': '#f8fafc',
+  'clusterBkg': '#f8fafc',
+  'clusterBorder': '#e2e8f0',
+  'nodeBorder': '#94a3b8',
+  'fontSize': '13px'
+}}}%%
+graph TB
+    subgraph PLATFORM["📱 Messaging Platform"]
+        direction LR
+        F1["Feishu"] --- F2["WeChat"]
+        F2 --- F3["Telegram"]
+        F3 --- F4["CLI"]
+    end
+
+    subgraph AGENT["🤖 AI Agent Core"]
+        direction LR
+        A1["🕐 Daily Cron<br/><small>9:30 check-in · 18:30 review</small>"]
+        A2["📊 State Engine<br/><small>Recovery Score · EWMA · RPE</small>"]
+        A3["🛡️ Anti-Hallucination<br/><small>Read-first · Python compute</small>"]
+    end
+
+    subgraph DATA["💾 Data & Knowledge"]
+        direction LR
+        D1["📝 state.md<br/>Training Journal"]
+        D2["📚 references/<br/>Knowledge Base"]
+        D3["🧮 Python Algorithms<br/>EWMA / Recovery<br/>Templates"]
+    end
+
+    PLATFORM <==>|"real-time messages"| AGENT
+    AGENT -.->|"daily push"| PLATFORM
+    AGENT ==>|"read/write"| DATA
 ```
-┌─────────────────────────────────────────────────────┐
-│                 Messaging Platform                    │
-│   Feishu · WeChat · Telegram · Discord · CLI          │
-└────────────┬───────────────────────────┬────────────┘
-             │ messages                   │ push notifications
-             ▼                            ▼
-┌──────────────────────────────────────────────────────┐
-│              AI Agent (Hermes Agent)                  │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐   │
-│  │ Daily    │  │ State    │  │ Anti-Hallucination│   │
-│  │ Cron     │  │ Tracking │  │ Hard Rules        │   │
-│  │ 9:30 AM  │  │ Recovery │  │ ✓ read_file first │   │
-│  │ 6:30 PM  │  │ EWMA     │  │ ✓ Python compute  │   │
-│  └──────────┘  └──────────┘  │ ✓ No fabricated   │   │
-│                               │   papers / dates  │   │
-│                               └──────────────────┘   │
-└────────────────────────────┬─────────────────────────┘
-                             │
-            ┌────────────────┼────────────────┐
-            ▼                ▼                ▼
-     ┌──────────┐    ┌──────────┐    ┌──────────────┐
-     │state.md  │    │references│    │  Algorithms   │
-     │journal   │    │knowledge │    │EWMA/Recovery │
-     └──────────┘    └──────────┘    └──────────────┘
-```
+
+> 💡 **Flow**: Your message arrives from chat app → Agent processes (compute state, check knowledge, anti-hallucination guard) → Training plan pushed back. All automated, you just reply.
 
 ---
 

@@ -55,31 +55,48 @@ Agent 自动处理：
 
 ## 🏗️ 架构概览
 
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'background': '#ffffff',
+  'primaryColor': '#2563eb',
+  'primaryTextColor': '#fff',
+  'primaryBorderColor': '#1d4ed8',
+  'lineColor': '#64748b',
+  'secondaryColor': '#f0f9ff',
+  'tertiaryColor': '#f8fafc',
+  'clusterBkg': '#f8fafc',
+  'clusterBorder': '#e2e8f0',
+  'nodeBorder': '#94a3b8',
+  'fontSize': '13px'
+}}}%%
+graph TB
+    subgraph PLATFORM["📱 通讯层 · Messaging Platform"]
+        direction LR
+        F1["飞书<br/>Feishu"] --- F2["微信<br/>WeChat"]
+        F2 --- F3["Telegram"]
+        F3 --- F4["CLI"]
+    end
+
+    subgraph AGENT["🤖 AI Agent 核心 · Agent Core"]
+        direction LR
+        A1["🕐 每日定时<br/>Daily Cron<br/><small>9:30 问询 · 18:30 复盘</small>"]
+        A2["📊 状态引擎<br/>State Engine<br/><small>Recovery Score · EWMA · RPE</small>"]
+        A3["🛡️ 抗幻觉守卫<br/>Anti-Hallucination<br/><small>先查文件 · Python 算 · 不编</small>"]
+    end
+
+    subgraph DATA["💾 数据与知识 · Data & Knowledge"]
+        direction LR
+        D1["📝 state.md<br/>训练日志"]
+        D2["📚 references/<br/>知识库"]
+        D3["🧮 Python 算法<br/>EWMA / Recovery<br/>模板"]
+    end
+
+    PLATFORM <==>|"实时消息<br/>双向"| AGENT
+    AGENT -.->|"每日自动推送"| PLATFORM
+    AGENT ==>|"读写数据"| DATA
 ```
-┌─────────────────────────────────────────────────────┐
-│                   通讯软件                            │
-│   飞书 · 微信 · Telegram · Discord · CLI              │
-└────────────┬───────────────────────────┬────────────┘
-             │ 消息收发                    │ 自动推送
-             ▼                            ▼
-┌──────────────────────────────────────────────────────┐
-│                AI Agent（Hermes Agent）                │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────┐   │
-│  │ 每日 cron │  │ 状态追踪  │  │ 抗幻觉硬规则       │   │
-│  │ 9:30 问询 │  │ Recovery │  │ ✓ 先查文件再答     │   │
-│  │ 18:30 复盘│  │ EWMA趋势 │  │ ✓ 用 Python 算    │   │
-│  └──────────┘  └──────────┘  │ ✓ 不编解释 / 不编  │   │
-│                               │   论文 / 不编日期   │   │
-│                               └──────────────────┘   │
-└────────────────────────────┬─────────────────────────┘
-                             │
-            ┌────────────────┼────────────────┐
-            ▼                ▼                ▼
-     ┌──────────┐    ┌──────────┐    ┌──────────────┐
-     │state.md  │    │references│    │  算法模板     │
-     │训练日志   │    │知识库    │    │EWMA/Recovery │
-     └──────────┘    └──────────┘    └──────────────┘
-```
+
+> 💡 **流程**：通讯软件收到你的消息 → Agent 处理（算状态、查知识库、抗幻觉校验）→ 出训练计划推回给你。全程自动化，你只需要回消息。
 
 ---
 
