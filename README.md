@@ -57,43 +57,44 @@ Agent 自动处理：
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'background': '#ffffff',
-  'primaryColor': '#2563eb',
+  'background': '#fcf9f7',
+  'primaryColor': '#6B4FBB',
   'primaryTextColor': '#fff',
-  'primaryBorderColor': '#1d4ed8',
-  'lineColor': '#64748b',
-  'secondaryColor': '#f0f9ff',
-  'tertiaryColor': '#f8fafc',
-  'clusterBkg': '#f8fafc',
-  'clusterBorder': '#e2e8f0',
-  'nodeBorder': '#94a3b8',
-  'fontSize': '13px'
+  'primaryBorderColor': '#5a3fa8',
+  'lineColor': '#D4A574',
+  'secondaryColor': '#f5f0eb',
+  'tertiaryColor': '#fffcf9',
+  'clusterBkg': '#fffcf9',
+  'clusterBorder': '#e8ddd0',
+  'nodeBorder': '#d4c5b8',
+  'fontSize': '13px',
+  'fontFamily': '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
 }}}%%
 graph TB
-    subgraph PLATFORM["📱 通讯层 · Messaging Platform"]
+    subgraph PLATFORM["📱 通讯层"]
         direction LR
-        F1["飞书<br/>Feishu"] --- F2["微信<br/>WeChat"]
+        F1["飞书 Feishu"] --- F2["微信 WeChat"]
         F2 --- F3["Telegram"]
         F3 --- F4["CLI"]
     end
 
-    subgraph AGENT["🤖 AI Agent 核心 · Agent Core"]
+    subgraph AGENT["🤖 AI Agent 核心"]
         direction LR
-        A1["🕐 每日定时<br/>Daily Cron<br/><small>9:30 问询 · 18:30 复盘</small>"]
-        A2["📊 状态引擎<br/>State Engine<br/><small>Recovery Score · EWMA · RPE</small>"]
-        A3["🛡️ 抗幻觉守卫<br/>Anti-Hallucination<br/><small>先查文件 · Python 算 · 不编</small>"]
+        A1["🕐 每日定时<br/><span style='color:#666;font-size:11px'>9:30 问询 · 18:30 复盘</span>"]
+        A2["📊 状态引擎<br/><span style='color:#666;font-size:11px'>Recovery · EWMA · RPE</span>"]
+        A3["🛡️ 抗幻觉守卫<br/><span style='color:#666;font-size:11px'>先查文件 · Python 算</span>"]
     end
 
-    subgraph DATA["💾 数据与知识 · Data & Knowledge"]
+    subgraph DATA["💾 数据与知识"]
         direction LR
-        D1["📝 state.md<br/>训练日志"]
-        D2["📚 references/<br/>知识库"]
-        D3["🧮 Python 算法<br/>EWMA / Recovery<br/>模板"]
+        D1["📝 state.md<br/><span style='color:#666;font-size:11px'>训练日志</span>"]
+        D2["📚 references/<br/><span style='color:#666;font-size:11px'>知识库</span>"]
+        D3["🧮 Python 算法<br/><span style='color:#666;font-size:11px'>EWMA / Recovery</span>"]
     end
 
-    PLATFORM <==>|"实时消息<br/>双向"| AGENT
-    AGENT -.->|"每日自动推送"| PLATFORM
-    AGENT ==>|"读写数据"| DATA
+    PLATFORM <==>|"实时消息"| AGENT
+    AGENT -.->|"每日推送"| PLATFORM
+    AGENT ==>|"读写"| DATA
 ```
 
 > 💡 **流程**：通讯软件收到你的消息 → Agent 处理（算状态、查知识库、抗幻觉校验）→ 出训练计划推回给你。全程自动化，你只需要回消息。

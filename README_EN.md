@@ -57,20 +57,21 @@ The Agent automatically:
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': {
-  'background': '#ffffff',
-  'primaryColor': '#2563eb',
+  'background': '#fcf9f7',
+  'primaryColor': '#6B4FBB',
   'primaryTextColor': '#fff',
-  'primaryBorderColor': '#1d4ed8',
-  'lineColor': '#64748b',
-  'secondaryColor': '#f0f9ff',
-  'tertiaryColor': '#f8fafc',
-  'clusterBkg': '#f8fafc',
-  'clusterBorder': '#e2e8f0',
-  'nodeBorder': '#94a3b8',
-  'fontSize': '13px'
+  'primaryBorderColor': '#5a3fa8',
+  'lineColor': '#D4A574',
+  'secondaryColor': '#f5f0eb',
+  'tertiaryColor': '#fffcf9',
+  'clusterBkg': '#fffcf9',
+  'clusterBorder': '#e8ddd0',
+  'nodeBorder': '#d4c5b8',
+  'fontSize': '13px',
+  'fontFamily': '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
 }}}%%
 graph TB
-    subgraph PLATFORM["📱 Messaging Platform"]
+    subgraph PLATFORM["📱 Messaging"]
         direction LR
         F1["Feishu"] --- F2["WeChat"]
         F2 --- F3["Telegram"]
@@ -79,19 +80,19 @@ graph TB
 
     subgraph AGENT["🤖 AI Agent Core"]
         direction LR
-        A1["🕐 Daily Cron<br/><small>9:30 check-in · 18:30 review</small>"]
-        A2["📊 State Engine<br/><small>Recovery Score · EWMA · RPE</small>"]
-        A3["🛡️ Anti-Hallucination<br/><small>Read-first · Python compute</small>"]
+        A1["🕐 Daily Cron<br/><span style='color:#666;font-size:11px'>9:30 check-in · 18:30 review</span>"]
+        A2["📊 State Engine<br/><span style='color:#666;font-size:11px'>Recovery · EWMA · RPE</span>"]
+        A3["🛡️ Anti-Hallucination<br/><span style='color:#666;font-size:11px'>Read-first · Python compute</span>"]
     end
 
     subgraph DATA["💾 Data & Knowledge"]
         direction LR
-        D1["📝 state.md<br/>Training Journal"]
-        D2["📚 references/<br/>Knowledge Base"]
-        D3["🧮 Python Algorithms<br/>EWMA / Recovery<br/>Templates"]
+        D1["📝 state.md<br/><span style='color:#666;font-size:11px'>Training Journal</span>"]
+        D2["📚 references/<br/><span style='color:#666;font-size:11px'>Knowledge Base</span>"]
+        D3["🧮 Python Algorithms<br/><span style='color:#666;font-size:11px'>EWMA / Recovery</span>"]
     end
 
-    PLATFORM <==>|"real-time messages"| AGENT
+    PLATFORM <==>|"messages"| AGENT
     AGENT -.->|"daily push"| PLATFORM
     AGENT ==>|"read/write"| DATA
 ```
