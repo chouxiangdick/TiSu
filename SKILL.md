@@ -164,6 +164,18 @@ LLM: [patch state.md] → [python 算 EWMA + Recovery] → [按状态出 plan]
 **所有 cron 必读的单一权威数据源**。schema 必须包含：
 
 ```yaml
+# 用户画像（首次加载时采集，之后只更新）
+## 基本信息
+- 性别: 男/女
+- 年龄: N
+- 身高: N cm
+- 当前体重: N kg（每日更新）
+- 训练经验: 新手 / 初中级 / 中高级 / 高级
+- 当前目标: 增肌 / 减脂 / 增力 / 保持
+- 每周训练天数: N
+- 伤病/限制: 无 / 具体描述
+- 目标备注: 自由文本
+
 # 状态（cron 启动时必读）
 
 ## 当前状态（updated YYYY-MM-DD HH:MM）
@@ -219,6 +231,7 @@ LLM: [patch state.md] → [python 算 EWMA + Recovery] → [按状态出 plan]
 ## Personal Coach Skill Design · Checklist
 
 ### 1. 数据 schema
+- [ ] state.md 有 **用户画像** 区（性别/年龄/身高/体重/经验/目标）
 - [ ] state.md 有"今日 (YYYY-MM-DD)"字段（带日期）
 - [ ] 每日/每周/每月数据 sections
 - [ ] EWMA / 趋势字段（cron 自动算）
@@ -250,6 +263,7 @@ LLM: [patch state.md] → [python 算 EWMA + Recovery] → [按状态出 plan]
 
 **fitness-coach v1 → v2 改造用了 11 步**（约 90 分钟）：
 
+0. **设计 state.md 用户画像**（性别/年龄/身高/体重/经验/目标）— 首次加载 skill 时 Agent 自动采集，存为 state.md 基础数据
 1. 大改 SKILL.md v2（加 4 大支柱）
 2. 新增 7 个 references（每个支柱一个）
 3. 改 morning-X-plan cron prompt（加今日推进 + EWMA + Recovery）

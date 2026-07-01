@@ -24,6 +24,31 @@
 
 ---
 
+## 🎯 First Run: 30-Second Profile Setup
+
+The first time you load this skill, the Agent asks for your basics — once:
+
+```
+🏋️ Welcome to TiSu Fitness Coach!
+
+Let me get to know you so I can tailor your training:
+
+Gender: ? (Male / Female)
+Age: ?
+Height (cm): ?
+Weight (kg): ?
+Experience: ? (Beginner / Novice / Intermediate / Advanced)
+Current Goal: ? (Muscle Gain / Fat Loss / Strength / Maintenance)
+Days per week you can train: ?
+Any injuries or limitations: ?
+```
+
+After you reply, the Agent stores this in `state.md` under **User Profile**. All subsequent calculations (1RM estimation, BMR, mesocycle design, progressive overload) are based on your personal data — no repeated questions.
+
+> 💡 **Update anytime**: Just say "update my profile" or "I'm 80kg now" and the Agent patches `state.md` automatically.
+
+---
+
 ## 🎯 What It Does
 
 Instead of forcing you to open a fitness app and log manually, **TiSu flips the model** — the AI Agent messages you proactively through your chat app.
